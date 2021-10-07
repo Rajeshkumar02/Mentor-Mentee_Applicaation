@@ -1,15 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { db, firebaseApp } from "./Config";
 import { AuthContext } from "./Auth";
-import { Redirect ,Link} from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 const OtherComponents = (props) => {
     return (<div >
-        <button>
-      <Link to={props.link}>{props.name}</Link></button>    
-  
+        <button className="btn btn-warning float-right ml-2"><Link style={{ textDecoration: 'none',color: "black" }} to={props.link}>{props.name}</Link></button>
     </div>)
-  }
+}
 
 
 function AddMentee() {
@@ -36,10 +34,10 @@ function AddMentee() {
                 Mother_Number: M_M_Number,
                 Mentor_Name: currentUser._delegate.displayName,
             }
-        ).then(res=>{deleteVal()})
+        ).then(res => { deleteVal() })
 
     }
-    const deleteVal = async (event) =>{
+    const deleteVal = async (event) => {
         alert("Mentee added sucessfully");
         setMentee_Name("");
         setM_Roll_Number("");
@@ -55,37 +53,42 @@ function AddMentee() {
     }
 
     return (
-        <div>
-            <form onSubmit={handler}>
-                <label>
-                    Student Name:<br></br>
-                    <input type="text" name="name" value={Mentee_Name} onChange={(e) => setMentee_Name(e.target.value)} required />
-                </label><br />
-                <label>
-                    Roll Number :<br></br>
-                    <input type="text" name="name" value ={M_Roll_Number}onChange={(e) => setM_Roll_Number(e.target.value)} required />
-                </label><br />
-                <label>
-                    Mobile Nmumber (Student) : <br></br>
-                    <input type="text" name="name" value={M_Number} onChange={(e) => setM_Number(e.target.value)} required />
-                </label><br />
-                <label>
-                    Email Id (Student) : <br></br>
-                    <input type="text" name="name" value ={M_Email} onChange={(e) => setM_Email(e.target.value)} required />
-                </label><br />
-                <label>
-                    Mobile Number (Father) : <br></br>
-                    <input type="text" name="name" value = {M_F_Number} onChange={(e) => setM_F_Number(e.target.value)} required />
-                </label><br />
-                <label>
-                    Mobile Number (Mother) : <br></br>
-                    <input type="text" name="name" value = {M_M_Number} onChange={(e) => setM_M_Number(e.target.value)} />
-                </label><br />
-                <center><input className="btn button" type="submit" value="Submit" /></center>
-            </form> 
-            <OtherComponents name="List" link="list"/>
-            <button className="btn btn-danger float-end mt-0 mx-2" onClick={() => firebaseApp.auth().signOut()}>Sign out</button><br /><br />
+        <div className="container mt-2">
+            <OtherComponents className="btn btn-warning float-right ml-2" name="List" link="list" />
+            <div className="row justify-content-center align-items-center text-center p-2">
+                <div className="m-1 col-sm-8 col-md-6 col-lg-4 shadow-sm p-3 mb-5 bg-white border rounded" >
+                    <div className="pt-5 pb-5">
+                        <img className="rounded mx-auto d-block"
+                            src="https://www.kpriet.ac.in/asset/frontend/images/logo/logo.png"
+                            alt="" style={{ width: 100 + "px", height: 100 + "px" }} />
+                        <p className="text-center text-uppercase mt-3">KPRIET MENTEES TRACKING SYSTEM</p>
+                        <p className="text-center text-uppercase mt-3">Add Mentee's</p>
+                        <form onSubmit={handler}>
+                            <div className="form-group input-group-md">
+                                <input type="text" className="form-control" placeholder="Mentee Name" name="name" value={Mentee_Name} onChange={(e) => setMentee_Name(e.target.value)} required />
+                            </div>
+                            <div className="form-group input-group-md">
+                                <input type="text" className="form-control" placeholder="Mentee Roll No" name="name" value={M_Roll_Number} onChange={(e) => setM_Roll_Number(e.target.value)} required />
+                            </div>
+                            <div className="form-group input-group-md">
+                                <input type="text" className="form-control" placeholder="Mentee Ph.Number" name="name" value={M_Number} onChange={(e) => setM_Number(e.target.value)} required />
+                            </div>
+                            <div className="form-group input-group-md">
+                                <input type="text" className="form-control" name="name" placeholder="Mentee Email" value={M_Email} onChange={(e) => setM_Email(e.target.value)} required />
+                            </div>
+                            <div className="form-group input-group-md">
+                                <input type="text" className="form-control" name="name" placeholder="Mentee Father Ph.Number" value={M_F_Number} onChange={(e) => setM_F_Number(e.target.value)} required />
+                            </div>
+                            <div className="form-group input-group-md">
+                                <input type="text" className="form-control" name="name" placeholder="Mentee Mother Ph.Number" value={M_M_Number} onChange={(e) => setM_M_Number(e.target.value)} />
+                            </div>
+                            <center><input className="btn btn-lg btn-block btn-primary mt-4" type="submit" value="Submit" /></center>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
     );
 }
 

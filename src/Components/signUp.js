@@ -10,11 +10,19 @@ import { db } from "./Config.js";
 const Form = props => {
     const [showpasswordtype, setpasswordtype] = useState("password");
     return (<div>
-        <FormInput description="name" placeholder="Enter your name" type="text" name="name" />
-        <FormInput description="rollnumber" placeholder="Enter your Rollnumber" type="text" name="rollnumber" />
-        <FormInput description="Email" placeholder="Enter your email" type="email" name="email" />
-        <FormInput description="Password" placeholder="Enter your password" type={showpasswordtype} name="password" />
-        <div className="float-end mx-5">
+        <div className="form-group input-group-md">
+            <FormInput className="form-control" description="name" placeholder="Enter your name" type="text" name="name" />
+        </div>
+        <div className="form-group input-group-md">
+            <FormInput className="form-control" description="rollnumber" placeholder="Enter your Rollnumber" type="text" name="rollnumber" />
+        </div>
+        <div className="form-group input-group-md">
+            <FormInput className="form-control" description="Email" placeholder="Enter your email" type="email" name="email" />
+        </div>
+        <div className="form-group input-group-md">
+            <FormInput className="form-control" description="Password" placeholder="Enter your password" type={showpasswordtype} name="password" />
+        </div>
+        <div className="float-right mt-2">
             <input type="checkbox" onClick={(e) => {
                 if (showpasswordtype === "password") {
                     setpasswordtype("text");
@@ -41,37 +49,37 @@ const SignUp = () => {
                     displayName: name.value
                 })
             }
-                setNow(false);
-                db.collection("Mentor_List").doc(userCredential.user.uid).set({ Name: name.value, StafId: rollnumber.value, Email: email.value, password: password.value }).then(() => {
-                    firebaseApp.auth().signOut();
-                    userCredential.user.sendEmailVerification().then(() => {
-                        alert("Verification Email is send");
-                        setRedirect(true);
-                    }).catch(() => {
+            setNow(false);
+            db.collection("Mentor_List").doc(userCredential.user.uid).set({ Name: name.value, StafId: rollnumber.value, Email: email.value, password: password.value }).then(() => {
+                firebaseApp.auth().signOut();
+                userCredential.user.sendEmailVerification().then(() => {
+                    alert("Verification Email is send");
+                    setRedirect(true);
+                }).catch(() => {
 
-                        alert("Try after some time")
-                    })
-                }).catch((err) => {
-                    if (err.message === "The email address is badly formatted.") {
-                        alert(err.message);
-                        console.log(err.message);
-                    } else {
-                        alert(err.message);
-                        console.log(err.message);
-                    }
+                    alert("Try after some time")
                 })
             }).catch((err) => {
-                if (err.message === "Password should be at least 6 characters") {
+                if (err.message === "The email address is badly formatted.") {
                     alert(err.message);
-                    console.log(alert.message);
-                } else if (err.message === "The email address is already in use by another account.") {
-                    console.log("User already exist");
-                    alert(err.message);
-                    alreadyUserExists(true);
+                    console.log(err.message);
                 } else {
                     alert(err.message);
+                    console.log(err.message);
                 }
             })
+        }).catch((err) => {
+            if (err.message === "Password should be at least 6 characters") {
+                alert(err.message);
+                console.log(alert.message);
+            } else if (err.message === "The email address is already in use by another account.") {
+                console.log("User already exist");
+                alert(err.message);
+                alreadyUserExists(true);
+            } else {
+                alert(err.message);
+            }
+        })
     };
     if (redirect) {
         return <Redirect to="/Login" />;
@@ -84,16 +92,27 @@ const SignUp = () => {
         return <Redirect to="/Login" />;
     }
 
-    return (<div>
-
-        <form onSubmit={handleSubmit}>
-            <div id="loginform">
-                <FormHeader title="Register" />
-                <Form />
-                <OtherComponents name="Login" link="Login" value="Already have an account" />
+    return (
+        <div className="container mt-2">
+            < div className="row justify-content-center align-items-center text-center p-2">
+                <div className="m-1 col-sm-8 col-md-6 col-lg-4 shadow-sm p-3 mb-5 bg-white border rounded" >
+                    <div className="pt-5 pb-5">
+                        <img className="rounded mx-auto d-block"
+                            src="https://www.kpriet.ac.in/asset/frontend/images/logo/logo.png"
+                            alt="" style={{ width: 100 + "px", height: 100 + "px" }} />
+                        <p className="text-center text-uppercase mt-3">KPRIET MENTEES TRACKING SYSTEM</p>
+                        <form onSubmit={handleSubmit}>
+                            <div id="loginform">
+                                <FormHeader title="Register" />
+                                <Form />
+                            </div>
+                        </form>
+                    </div>
+                    <OtherComponents name="Login" link="Login" value="Already have an account" />
+                </div>
             </div>
-        </form>
-    </div>);
+        </div>
+    );
 };
 
 export default SignUp;

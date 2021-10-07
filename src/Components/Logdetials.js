@@ -2,31 +2,39 @@ import { db } from './Config';
 import React, { useState, useContext, useEffect, } from 'react';
 import { AuthContext } from "./Auth";
 
-import { Redirect ,Link} from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 const OtherComponents = (props) => {
-    return (<div >
-        <button>
-      <Link to={props.link}>{props.name}</Link></button>    
-  
-    </div>)
-  }
+    return (
+        <div >
+            <button className="btn btn-warning float-right ml-2"><Link style={{ textDecoration: 'none', color: "black" }} to={props.link}>{props.name}</Link></button>
+        </div>
+    )
+}
 const Data = (props) => {
-    var s ="";
-    for(var i=0;i<props.todo.length;i++){
-        s+=props.todo[i];
+    var s = "";
+    for (var i = 0; i < props.todo.length; i++) {
+        s += props.todo[i];
     }
-    if(s.includes(props.roll)){
-    return (<div>
-      <h1>Name = {props.name}</h1>
-      <h1>Roll = {props.roll}</h1>
-      <h1>Time = {props.time}</h1>
+    if (s.includes(props.roll)) {
+        return (<div>
+            <div className="card" style={{ width: 18 + "rem" }}>
+                <div class="card-body">
+                    <p class="card-text">
+                        Name : {props.name}<br />
+                        Roll : {props.roll}<br />
+                        Time : {props.time}<br />
+                        Date : {props.date}</p>
+                </div>
+            </div>
+            <br></br>
 
-    </div>)}
-    return(
+        </div>)
+    }
+    return (
         <br></br>
     )
-  };
+};
 function Logdetials() {
     const [todos, setTodos] = useState([]);
     const [error, setError] = useState(null);
@@ -36,6 +44,11 @@ function Logdetials() {
     const [val, setval] = useState(0);
     function Fetchdata() {
         const { currentUser } = useContext(AuthContext);
+
+        if (!currentUser) {
+            return <Redirect to="/" />;
+        }
+        
         const getFromFirebase = db.collection(currentUser._delegate.uid);
         getFromFirebase.onSnapshot((querySnapShot) => {
             const saveFirebaseTodos = [];
@@ -46,7 +59,6 @@ function Logdetials() {
         });
     }
 
-<<<<<<< HEAD
     useEffect(() => {
         fetch("https://sheet.best/api/sheets/91a05f03-799d-4cd4-94ae-1d265d39f23e")
             .then(res => res.json())
@@ -55,51 +67,35 @@ function Logdetials() {
                     setIsLoaded(true);
                     setItems(result);
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     setIsLoaded(true);
                     setError(error);
                 }
             )
     }, [])
-=======
-    const fetchProducts = async () => {
-        const { data } = await Axios.get(
-            "https://sheet.best/api/sheets/fe4e988a-6ec3-4e35-9e8b-fed798e3de04"
-        );
-        const products = data;
-        setProducts(products);
-    };
->>>>>>> bace78ecbcc840773ebc76afcba6bcb7a572d21a
 
 
     if (val === 0) {
         setval(1);
         Fetchdata();
     }
-
-    //var num = todos.length;
-    // function Show() {
-    //     products.map((pro) => {
-    //         for (var i = 0; i < num; i++) {
-    //             if (pro.RollNo in todos) {
-
-    //                 console.log(pro.RollNo);
-    //                 console.log(pro.Name);
-    //                 console.log(pro.Time);
-    //                 console.log(pro.Date)
-
-    //             }
-    //         }
-    //     })
-    // };
-
     return (
         <div>
-            <OtherComponents name="Dashboard" link="dashboard"/>
-            {items.map((pro) => (<Data name={pro.Name} roll={pro.RollNo} time={pro.Time} todo={todos}/>))}
+            <div className="container mt-2">
+                <OtherComponents name="Dashboard" link="dashboard" />
+                < div className="row justify-content-center align-items-center text-center p-2">
+                    <div className="m-1 col-sm-8 col-md-6 col-lg-4 shadow-sm p-3 mb-5 bg-white rounded" >
+                        <div className="pt-5 pb-5">
+                            <img className="rounded mx-auto d-block"
+                                src="https://www.kpriet.ac.in/asset/frontend/images/logo/logo.png"
+                                alt="" style={{ width: 100 + "px", height: 100 + "px" }} />
+                            <p className="text-center text-uppercase mt-3">KPRIET MENTEES TRACKING SYSTEM</p>
+                            <b className="text-center text-uppercase mt-3">Log Detials</b><br /><br />
+                            {items.map((pro) => (<Data name={pro.Name} roll={pro.RollNo} time={pro.Time} date={pro.Date} todo={todos} />))}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
