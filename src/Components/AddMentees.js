@@ -1,8 +1,15 @@
 import React, { useState, useContext } from 'react';
 import { db, firebaseApp } from "./Config";
 import { AuthContext } from "./Auth";
-import { Redirect } from "react-router-dom";
+import { Redirect ,Link} from "react-router-dom";
 
+const OtherComponents = (props) => {
+    return (<div >
+        <button>
+      <Link to={props.link}>{props.name}</Link></button>    
+  
+    </div>)
+  }
 
 
 function AddMentee() {
@@ -29,7 +36,18 @@ function AddMentee() {
                 Mother_Number: M_M_Number,
                 Mentor_Name: currentUser._delegate.displayName,
             }
-        )
+        ).then(res=>{deleteVal()})
+
+    }
+    const deleteVal = async (event) =>{
+        alert("Mentee added sucessfully");
+        setMentee_Name("");
+        setM_Roll_Number("");
+        setM_F_Number("");
+        setM_M_Number("");
+        setM_Number("");
+        setM_Email("");
+
 
     }
     if (!currentUser) {
@@ -41,30 +59,31 @@ function AddMentee() {
             <form onSubmit={handler}>
                 <label>
                     Student Name:<br></br>
-                    <input type="text" name="name" onChange={(e) => setMentee_Name(e.target.value)} required />
+                    <input type="text" name="name" value={Mentee_Name} onChange={(e) => setMentee_Name(e.target.value)} required />
                 </label><br />
                 <label>
                     Roll Number :<br></br>
-                    <input type="text" name="name" onChange={(e) => setM_Roll_Number(e.target.value)} required />
+                    <input type="text" name="name" value ={M_Roll_Number}onChange={(e) => setM_Roll_Number(e.target.value)} required />
                 </label><br />
                 <label>
                     Mobile Nmumber (Student) : <br></br>
-                    <input type="text" name="name" onChange={(e) => setM_Number(e.target.value)} required />
+                    <input type="text" name="name" value={M_Number} onChange={(e) => setM_Number(e.target.value)} required />
                 </label><br />
                 <label>
                     Email Id (Student) : <br></br>
-                    <input type="text" name="name" onChange={(e) => setM_Email(e.target.value)} required />
+                    <input type="text" name="name" value ={M_Email} onChange={(e) => setM_Email(e.target.value)} required />
                 </label><br />
                 <label>
                     Mobile Number (Father) : <br></br>
-                    <input type="text" name="name" onChange={(e) => setM_F_Number(e.target.value)} required />
+                    <input type="text" name="name" value = {M_F_Number} onChange={(e) => setM_F_Number(e.target.value)} required />
                 </label><br />
                 <label>
                     Mobile Number (Mother) : <br></br>
-                    <input type="text" name="name" onChange={(e) => setM_M_Number(e.target.value)} />
+                    <input type="text" name="name" value = {M_M_Number} onChange={(e) => setM_M_Number(e.target.value)} />
                 </label><br />
                 <center><input className="btn button" type="submit" value="Submit" /></center>
-            </form>
+            </form> 
+            <OtherComponents name="List" link="list"/>
             <button className="btn btn-danger float-end mt-0 mx-2" onClick={() => firebaseApp.auth().signOut()}>Sign out</button><br /><br />
         </div>
     );

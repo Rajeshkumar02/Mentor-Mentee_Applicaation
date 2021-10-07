@@ -1,6 +1,15 @@
 import { db } from './Config';
 import React, { useState,useContext,} from 'react';
 import { AuthContext } from "./Auth";
+import { Redirect ,Link} from "react-router-dom";
+
+const OtherComponents = (props) => {
+    return (<div >
+        <button>
+      <Link to={props.link}>{props.name}</Link></button>    
+  
+    </div>)
+  }
 
 function StudentList() {
     const { currentUser } = useContext(AuthContext);
@@ -50,7 +59,8 @@ function StudentList() {
                 ))
 
             }
-
+            <br />
+<OtherComponents name="Log Details" link="log"/>
         </div>
     );
 }
@@ -61,6 +71,7 @@ const Frame = ({ name, rollnumber, email, studentphone, fatherphone,motherphone 
     return (
 
         <center>
+            
 
             <div>
                 Name : {name} <br />

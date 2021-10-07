@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,Redirect} from "react-router-dom";
 import { AuthContext } from "./Auth";
 import { firebaseApp} from "./Config.js";
 import FormButton, { FormInput, FormHeader, OtherComponents } from "./FormButton";
@@ -8,8 +8,8 @@ import FormButton, { FormInput, FormHeader, OtherComponents } from "./FormButton
 const Form = () => {
     const [showpasswordtype, setpasswordtype] = useState("password");
     return (<div>
-        <FormInput description="Email" placeholder="Enter your email" type="email" name="email" />
-        <FormInput description="Password" placeholder="Enter your password" type={showpasswordtype} name="password" />
+        <FormInput description="Email" placeholder="Enter your email" type="email" name="email" /><br /><br />
+        <FormInput description="Password" placeholder="Enter your password" type={showpasswordtype} name="password" /><br /><br />
         <div className="float-end mx-5">
             <input type="checkbox" onClick={(e) => {
                 if (showpasswordtype === "password") {
@@ -25,7 +25,7 @@ const Form = () => {
 const LogIn = () => {
 
     const { currentUser } = useContext(AuthContext);
-
+    
     const [passwordWrong, setpasswordWrong] = useState(null);
     const handleSubmit = (e) => {
         let today = new Date();
@@ -47,7 +47,12 @@ const LogIn = () => {
             console.log("Error !");
         })
     }
+    if (currentUser) {
+        return <Redirect to="/dashboard"/>;
+      }
     return (<div>
+
+        <center><h1>KPRIET MENTEES TRACKING SYSTEM </h1></center>
 
         <form onSubmit={handleSubmit}>
             <div id="loginform">
