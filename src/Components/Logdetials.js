@@ -46,7 +46,6 @@ function Logdetials() {
         });
     }
 
-<<<<<<< HEAD
     useEffect(() => {
         fetch("https://sheet.best/api/sheets/91a05f03-799d-4cd4-94ae-1d265d39f23e")
             .then(res => res.json())
@@ -64,15 +63,6 @@ function Logdetials() {
                 }
             )
     }, [])
-=======
-    const fetchProducts = async () => {
-        const { data } = await Axios.get(
-            "https://sheet.best/api/sheets/fe4e988a-6ec3-4e35-9e8b-fed798e3de04"
-        );
-        const products = data;
-        setProducts(products);
-    };
->>>>>>> bace78ecbcc840773ebc76afcba6bcb7a572d21a
 
 
     if (val === 0) {
